@@ -30,7 +30,7 @@ import android.widget.Toast;
 public class Utility {
     // Config tools assume updateConfig() is run during each onCreate() in Activities
     // and each onCreateView() in Fragments
-    public static final int MOBILE_TABLET_BOUNDARY = 720;
+    public static final int MOBILE_TABLET_BOUNDARY = 600;
     private static boolean mIsPortrait = true;
     private static boolean mIsTablet = false;
     private static int mSmallestScreenWidthDp;

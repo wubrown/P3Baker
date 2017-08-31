@@ -67,17 +67,21 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
             public void onClick(View v) {
                 String extraDescription;
                 String extraVideoUrl;
+                String extraImage;
                 if (position == 0) {
                     extraDescription = mLongIngredientList;
                     extraVideoUrl = "";
+                    extraImage = "";
                 } else {
                     extraDescription = mRecipe.getStepDescription(position - 1);
                     extraVideoUrl = mRecipe.getStepVideoUrl(position - 1);
+                    extraImage = mRecipe.getStepImage(position-1);
                 }
                 if (Utility.isTablet()) {
                     Bundle arguments = new Bundle();
                     arguments.putString(StepDetailFragment.STEP_DESCRIPTION, extraDescription);
                     arguments.putString(StepDetailFragment.STEP_VIDEO, extraVideoUrl);
+                    arguments.putString(StepDetailFragment.STEP_IMAGE,extraImage);
                     StepDetailFragment fragment = new StepDetailFragment();
                     fragment.setArguments(arguments);
                     FragmentManager fm = ((StepListActivity) mContext).getSupportFragmentManager();
@@ -89,6 +93,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
                     Intent intent = new Intent(context, StepDetailActivity.class);
                     intent.putExtra(StepDetailActivity.STEP_DESCRIPTION, extraDescription);
                     intent.putExtra(StepDetailActivity.STEP_VIDEO, extraVideoUrl);
+                    intent.putExtra(StepDetailActivity.STEP_IMAGE,extraImage);
                     context.startActivity(intent);
                 }
             }

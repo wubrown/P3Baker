@@ -23,9 +23,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -42,6 +44,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 /**
  * A fragment representing a single Step detail pain within a larger activity viewgroup.
@@ -53,8 +56,11 @@ public class StepDetailFragment extends Fragment {
      */
     public static final String STEP_DESCRIPTION = "step_description";
     public static final String STEP_VIDEO = "step_video";
+    public static final String VIDEO_POSITION = "video_position";
+    public static final String STEP_IMAGE = "step_image";
     private String mStepDescription;
     private String mStepVideoUrl;
+    private String mStepImage;
     private boolean mIsTablet;
     private boolean mIsPortrait;
     private SimpleExoPlayer mExoPlayer;
@@ -78,6 +84,7 @@ public class StepDetailFragment extends Fragment {
         if (getArguments().containsKey(STEP_DESCRIPTION)) {
             mStepDescription = getArguments().getString(STEP_DESCRIPTION);
             mStepVideoUrl = getArguments().getString(STEP_VIDEO);
+            mStepImage = getArguments().getString(STEP_IMAGE);
         }
     }
 
@@ -103,9 +110,24 @@ public class StepDetailFragment extends Fragment {
             DefaultLoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
         }
+        long videoPosition = C.TIME_UNSET;
+        if(savedInstanceState != null){
+            videoPosition = savedInstanceState.getLong(VIDEO_POSITION, C.TIME_UNSET);
+        }
+        if(videoPosition != C.TIME_UNSET)
+            mExoPlayer.seekTo(videoPosition);
         mExoPlayer.prepare(sampleSource);
         mPlayerView.setPlayer(mExoPlayer);
 
+        ImageView iv = ((ImageView)rootView.findViewById(R.id.step_image));
+        if(mStepImage.length()==0){
+            iv.setVisibility(View.GONE);
+        } else if(mIsPortrait || mIsTablet){
+            Picasso.with(getContext()).load(mStepImage).into(iv);
+            iv.setVisibility(View.VISIBLE);
+        } else {
+            iv.setVisibility(View.GONE);
+        }
         TextView tv = ((TextView)rootView.findViewById(R.id.step_detail_text));
         tv.setText(mStepDescription);
         tv.setVisibility(mIsPortrait || mIsTablet ? View.VISIBLE : View.GONE);
@@ -117,6 +139,12 @@ public class StepDetailFragment extends Fragment {
         if (Util.SDK_INT <= 23) {
             mExoPlayer.release();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle state){
+        super.onSaveInstanceState(state);
+        state.putLong(VIDEO_POSITION,mExoPlayer.getCurrentPosition());
     }
 
     @Override

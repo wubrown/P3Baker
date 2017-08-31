@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -57,6 +58,8 @@ public class RecipeListActivity extends AppCompatActivity {
         Utility.updateConfig(this);
         mIsTablet=Utility.isTablet();
         mContext = this;
+        Toolbar toolbar = (Toolbar) findViewById(R.id.recipe_list_toolbar);
+        setSupportActionBar(toolbar);
 
         mRecipeRecyclerView = (RecyclerView) findViewById(R.id.recipe_list_recycler_view);
         assert mRecipeRecyclerView != null;
@@ -86,9 +89,6 @@ public class RecipeListActivity extends AppCompatActivity {
                    mRecipes = new Gson().fromJson(buf,Recipes.class);
                     mRecipeAdapter = new RecipeAdapter(mContext, mRecipes);
                     mRecipeRecyclerView.setAdapter(mRecipeAdapter);
-                   // Toast.makeText(RecipeListActivity.this, mRecipes.getRecipe(3).getIngredient(8).toString(), Toast.LENGTH_SHORT).show();
- /*
-                recyclerView.setAdapter(new RecipeListActivity.SimpleItemRecyclerViewAdapter(mRecipes.getRecipes())); */
                 } catch (Exception e) {
                     Toast.makeText(RecipeListActivity.this,e.toString(),Toast.LENGTH_LONG).show();
                 }

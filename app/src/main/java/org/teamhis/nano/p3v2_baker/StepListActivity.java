@@ -18,9 +18,11 @@ package org.teamhis.nano.p3v2_baker;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import com.google.gson.Gson;
 
@@ -48,12 +50,18 @@ public class StepListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_step_list);
         mContext = this;
 
-        Bundle extras = getIntent().getExtras();
-        String recipeJson = extras.getString(RECIPE_JSON_KEY);
-        Gson gson = new Gson();
-        mRecipe = gson.fromJson(recipeJson, Recipes.Recipe.class);
-//        Log.v(TAG,mRecipe.getName());
+        Toolbar toolbar = (Toolbar) findViewById(R.id.step_list_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras!= null) {
+            String recipeJson = extras.getString(RECIPE_JSON_KEY);
+            Gson gson = new Gson();
+            mRecipe = gson.fromJson(recipeJson, Recipes.Recipe.class);
+            Recipes.setCurrentRecipe(mRecipe);
+        } else {mRecipe = Recipes.getCurrentRecipe();}
         mStepRecyclerView = (RecyclerView) findViewById(R.id.step_list_recycler_view);
 
         assert mStepRecyclerView != null;
@@ -62,8 +70,4 @@ public class StepListActivity extends AppCompatActivity {
         mStepRecyclerView.setAdapter(mStepAdapter);
         mIsTablet=Utility.isTablet();
     }
-
-
-
-
 }

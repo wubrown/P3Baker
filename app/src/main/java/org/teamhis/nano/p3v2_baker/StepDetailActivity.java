@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
@@ -34,8 +35,10 @@ import android.view.MenuItem;
 public class StepDetailActivity extends AppCompatActivity {
     public static final String STEP_DESCRIPTION = "step_description";
     public static final String STEP_VIDEO = "step_video";
+    public static final String STEP_IMAGE = "step_image";
     private String mStepDescription;
     private String mStepVideoUrl;
+    private String mStepImage;
     private Context mContext;
     private boolean mIsPortrait;
 
@@ -46,25 +49,25 @@ public class StepDetailActivity extends AppCompatActivity {
         mContext = this;
         Utility.updateConfig(this);
         mIsPortrait = Utility.isPortrait();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.step_detail_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
         Bundle extras = getIntent().getExtras();
+
         mStepDescription = extras.getString(STEP_DESCRIPTION);
         mStepVideoUrl = extras.getString(STEP_VIDEO);
+        mStepImage = extras.getString(STEP_IMAGE);
 
-        // savedInstanceState is non-null when there is fragment state
-        // saved from previous configurations of this activity
-        // (e.g. when rotating the screen from portrait to landscape).
-        // In this case, the fragment will automatically be re-added
-        // to its container so we don't need to manually add it.
-        // For more information, see the Fragments API guide at:
-        //
-        // http://developer.android.com/guide/components/fragments.html
-        //
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
             arguments.putString(StepDetailFragment.STEP_DESCRIPTION,mStepDescription);
             arguments.putString(StepDetailFragment.STEP_VIDEO,mStepVideoUrl);
+            arguments.putString(StepDetailFragment.STEP_IMAGE,mStepImage);
             StepDetailFragment fragment = new StepDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -72,20 +75,13 @@ public class StepDetailActivity extends AppCompatActivity {
                     .commit();
         }
     }
-
- /*   @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            navigateUpTo(new Intent(this, StepListActivity.class));
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if(item.getItemId() == android.R.id.home){
+            Intent upIntent = NavUtils.getParentActivityIntent(this);
+            NavUtils.navigateUpTo(this,upIntent);
             return true;
         }
         return super.onOptionsItemSelected(item);
-    } */
+    }
 }

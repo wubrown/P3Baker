@@ -29,6 +29,7 @@ public class Recipes {
     private ArrayList<Recipe> recipes;
     private static String sCurrentRecipeName = "";
     private static ArrayList<String> sCurrentIngredientList = null;
+    private static Recipe sCurrentRecipe= null;
     public Recipes(ArrayList<Recipe> recipes) {
         this.recipes = recipes;
     }
@@ -58,20 +59,24 @@ public class Recipes {
     public static ArrayList<String> getCurrentIngredientList(){
         return sCurrentIngredientList;
     }
+    public static void setCurrentRecipe(Recipe recipe){sCurrentRecipe = recipe;}
+    public static Recipe getCurrentRecipe(){return sCurrentRecipe;}
     public class Recipe {
         private int id;
         private String name;
         private ArrayList<Ingredient> ingredients;
         private ArrayList<Step> steps;
         private int servings;
+        private String image;
 
         public Recipe(int id, String name, ArrayList<Ingredient> ingredients,
-                      ArrayList<Step> steps, int servings){
+                      ArrayList<Step> steps, int servings, String image){
             this.id = id;
             this.name = name;
             this.ingredients = ingredients;
             this.steps = steps;
             this.servings = servings;
+            this.image = image;
         }
         public int getId(){
             return id;
@@ -88,12 +93,14 @@ public class Recipes {
         public int getServings(){
             return servings;
         }
+        public String getImage() { return image;}
         public String getStepDescription(int index){
             return steps.get(index).description;
         }
         public String getStepVideoUrl(int index){
             return steps.get(index).videoURL;
         }
+        public String getStepImage(int index) {return steps.get(index).thumbnailURL;}
         public Ingredient getIngredient(int position){
             return ingredients.get(position);
         }

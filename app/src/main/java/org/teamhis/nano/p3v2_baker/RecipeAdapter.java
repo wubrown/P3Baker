@@ -25,9 +25,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 /**
  * Adapter class to dynamically provide data for the recipe list RecyclerList
@@ -51,6 +53,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @Override
     public void onBindViewHolder(RecipeViewHolder holder, final int position){
        holder.recipeNameView.setText(mRecipes.getRecipe(position).getName());
+        String image = mRecipes.getRecipe(position).getImage();
+        if(image.length()==0){
+            holder.recipeImageView.setVisibility(View.GONE);
+        } else {
+            Picasso.with(mContext).load(image).into(holder.recipeImageView);
+            holder.recipeImageView.setVisibility(View.VISIBLE);
+        }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,12 +85,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
    class RecipeViewHolder extends RecyclerView.ViewHolder {
        TextView recipeNameView;
+       ImageView recipeImageView;
        public final View mView;
 
        public RecipeViewHolder(View itemView){
            super(itemView);
            mView = itemView;
            recipeNameView = (TextView) itemView.findViewById(R.id.recipe_name);
+           recipeImageView = (ImageView) itemView.findViewById(R.id.recipe_image);
        }
    }
 }

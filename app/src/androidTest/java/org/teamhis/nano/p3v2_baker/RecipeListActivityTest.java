@@ -44,9 +44,9 @@ public class RecipeListActivityTest {
         textView.check(matches(withText("Nutella Pie")));
 
         ViewInteraction textView2 = onView(
-                allOf(withId(R.id.recipe_name), withText("Cheesecake"),
+                allOf(withId(R.id.recipe_name), withText("Brownies"),
                             isDisplayed()));
-        textView2.check(matches(withText("Cheesecake")));
+        textView2.check(matches(withText("Brownies")));
 
         ViewInteraction recyclerView = onView(
                 allOf(withId(R.id.recipe_list_recycler_view),

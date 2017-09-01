@@ -23,6 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
+        android:id="@+id/step_detail_media_frame"
         android:keepScreenOn="true">
 
         <com.google.android.exoplayer2.ui.SimpleExoPlayerView android:id="@+id/player_view"

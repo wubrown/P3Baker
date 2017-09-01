@@ -36,9 +36,11 @@ public class StepDetailActivity extends AppCompatActivity {
     public static final String STEP_DESCRIPTION = "step_description";
     public static final String STEP_VIDEO = "step_video";
     public static final String STEP_IMAGE = "step_image";
+    public static final String STEP_IS_INGREDIENTS = "step_is_ingredients";
     private String mStepDescription;
     private String mStepVideoUrl;
     private String mStepImage;
+    private boolean mStepIsIngredients;
     private Context mContext;
     private boolean mIsPortrait;
 
@@ -60,6 +62,7 @@ public class StepDetailActivity extends AppCompatActivity {
         mStepDescription = extras.getString(STEP_DESCRIPTION);
         mStepVideoUrl = extras.getString(STEP_VIDEO);
         mStepImage = extras.getString(STEP_IMAGE);
+        mStepIsIngredients = extras.getBoolean(STEP_IS_INGREDIENTS);
 
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
@@ -68,6 +71,7 @@ public class StepDetailActivity extends AppCompatActivity {
             arguments.putString(StepDetailFragment.STEP_DESCRIPTION,mStepDescription);
             arguments.putString(StepDetailFragment.STEP_VIDEO,mStepVideoUrl);
             arguments.putString(StepDetailFragment.STEP_IMAGE,mStepImage);
+            arguments.putBoolean(StepDetailFragment.STEP_IS_INGREDIENTS,mStepIsIngredients);
             StepDetailFragment fragment = new StepDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

@@ -23,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,9 +59,11 @@ public class StepDetailFragment extends Fragment {
     public static final String STEP_VIDEO = "step_video";
     public static final String VIDEO_POSITION = "video_position";
     public static final String STEP_IMAGE = "step_image";
+    public static final String STEP_IS_INGREDIENTS = "step_is_ingredients";
     private String mStepDescription;
     private String mStepVideoUrl;
     private String mStepImage;
+    private boolean mStepIsIngredients;
     private boolean mIsTablet;
     private boolean mIsPortrait;
     private SimpleExoPlayer mExoPlayer;
@@ -85,6 +88,7 @@ public class StepDetailFragment extends Fragment {
             mStepDescription = getArguments().getString(STEP_DESCRIPTION);
             mStepVideoUrl = getArguments().getString(STEP_VIDEO);
             mStepImage = getArguments().getString(STEP_IMAGE);
+            mStepIsIngredients = getArguments().getBoolean(STEP_IS_INGREDIENTS);
         }
     }
 
@@ -93,6 +97,7 @@ public class StepDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.step_detail, container, false);
         mPlayerView = ((SimpleExoPlayerView)rootView.findViewById(R.id.player_view));
+
         Uri uri = Uri.parse(mStepVideoUrl);
 //        ((TextView) rootView.findViewById(R.id.step_detail_video)).setText(mStepVideoUrl);
         Handler handler = new Handler();
@@ -128,9 +133,11 @@ public class StepDetailFragment extends Fragment {
         } else {
             iv.setVisibility(View.GONE);
         }
+        FrameLayout fl = (FrameLayout) rootView.findViewById(R.id.step_detail_media_frame);
+        fl.setVisibility(mStepIsIngredients? View.GONE : View.VISIBLE);
         TextView tv = ((TextView)rootView.findViewById(R.id.step_detail_text));
         tv.setText(mStepDescription);
-        tv.setVisibility(mIsPortrait || mIsTablet ? View.VISIBLE : View.GONE);
+        tv.setVisibility(mIsPortrait || mIsTablet || mStepIsIngredients? View.VISIBLE : View.GONE);
         return rootView;
     }
     @Override

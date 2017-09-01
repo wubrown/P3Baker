@@ -68,19 +68,23 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
                 String extraDescription;
                 String extraVideoUrl;
                 String extraImage;
+                boolean extraIsIngredients;
                 if (position == 0) {
                     extraDescription = mLongIngredientList;
                     extraVideoUrl = "";
                     extraImage = "";
+                    extraIsIngredients = true;
                 } else {
                     extraDescription = mRecipe.getStepDescription(position - 1);
                     extraVideoUrl = mRecipe.getStepVideoUrl(position - 1);
                     extraImage = mRecipe.getStepImage(position-1);
+                    extraIsIngredients = false;
                 }
                 Bundle arguments = new Bundle();
                 arguments.putString(StepDetailFragment.STEP_DESCRIPTION, extraDescription);
                 arguments.putString(StepDetailFragment.STEP_VIDEO, extraVideoUrl);
                 arguments.putString(StepDetailFragment.STEP_IMAGE,extraImage);
+                arguments.putBoolean(StepDetailFragment.STEP_IS_INGREDIENTS,extraIsIngredients);
                 if (Utility.isTablet()) {
                     StepDetailFragment fragment = new StepDetailFragment();
                     fragment.setArguments(arguments);
